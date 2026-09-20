@@ -1,1 +1,23 @@
-built for HomeLab VM 2000 macOS 15.8 Intel AC 3168 BT
+Why this fork exists
+====================
+
+HomeLab: macOS VM 2000 (Sequoia 15.8) on pve needs IntelBluetoothFirmware
+for its Intel AC 3168 Bluetooth (8087:0aa7).
+
+The newest upstream RELEASE is v2.4.0 (Feb 2024). The Sequoia compatibility
+fix landed 2024-06-24 ("IntelBTPatcher: compat for Sequoia ... the HCI
+memory"), i.e. AFTER that release. Master is 2.5.0, upstream publishes no
+nightly, and the only CI artifact expired 2026-04-15.
+
+So the working kext must be built from master. This fork exists only to run
+upstream's own CI workflow:
+
+    gh workflow run CI --repo gresheff/IntelBluetoothFirmware --ref master
+    gh run download <run-id> --repo gresheff/IntelBluetoothFirmware
+    # take the Release zip
+
+Pair it with BlueToolFixup 2.6.9 (NOT 2.7.x - acidanthera/bugtracker#2505)
+and do NOT install IntelBTPatcher.
+
+Built copies are archived on pve at /root/.
+Full write-up: HomeLab repo, macos-vms.md.
